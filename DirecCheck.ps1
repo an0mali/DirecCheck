@@ -204,30 +204,35 @@ foreach ($key in $allKeys) {
 }
 
 function mainMenu {
-# === Main Menu ===
-Write-Host "`n1. Generate checksums to file"
-Write-Host "2. Verify checksums from file"
-Write-Host "3. Compare source directory to target directory"
-$choice = Read-Host "Select an option, or Ctrl+C to quit (1, 2, 3)"
+    # === Main Menu ===
+    Write-Host "`n1. Generate checksums to file"
+    Write-Host "2. Verify checksums from file"
+    Write-Host "3. Compare source directory to target directory"
+    $choice = Read-Host "Select an option, or Ctrl+C to quit (1, 2, 3)"
 
-switch ($choice) {
-    "1" {
-        $dir = Read-Host "Enter directory to hash"
-        $file = Read-Host "Enter path to save checksum file"
-        Generate-Checksums -TargetDir $dir -ChecksumFile $file
-    }
-    "2" {
-        $file = Read-Host "Enter path to checksum file"
-        Verify-Checksums -ChecksumFile $file
-    }
-    "3" {
-        Compare-SourceToTarget
-    }
+    switch ($choice) {
+        "1" {
+            $dir = Read-Host "Enter directory to hash"
+            $file = Read-Host "Enter path to save checksum file"
+            Generate-Checksums -TargetDir $dir -ChecksumFile $file
+        }
+        "2" {
+            $file = Read-Host "Enter path to checksum file"
+            Verify-Checksums -ChecksumFile $file
+        }
+        "3" {
+            Compare-SourceToTarget
+        }
 
-    default {
-        Write-Host "Invalid option." -ForegroundColor Red
+        default {
+            Write-Host "Invalid option." -ForegroundColor Red
+        }
     }
 }
-}
 
-mainMenu
+try {
+    mainMenu
+} catch {
+    Write-Host "An error occurred: $_" -ForegroundColor Red
+    mainMenu
+}
